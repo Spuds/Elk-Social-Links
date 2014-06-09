@@ -58,7 +58,7 @@ function ipdc_sociallinks(&$output, &$message)
 	{
 		// Yes ugly inline css
 		$output['body'] .= '
-			<div class="floatleft" style="margin: 10px 0 0; padding: 8px 0;">';
+			</div><div class="floatleft" style="margin: 15px 0 0;">';
 
 		// Show Facebook Like button
 		if (!empty($modSettings['sl_facebook']))
@@ -74,8 +74,5 @@ function ipdc_sociallinks(&$output, &$message)
 		if (!empty($modSettings['sl_googleplus']))
 			$output['body'] .= '
 				<div class="g-plusone" data-size="medium"></div><script type="text/javascript">(function() {var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);})();</script>';
-
-		$output['body'] .= '
-			</div>';
 	}
 }
