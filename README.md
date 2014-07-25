@@ -8,7 +8,7 @@ The software is licensed under [Mozilla Public License 1.1 (MPL-1.1)](http://ope
 
 ###Features
 * Ability to select which links are shown in the post
-* Ability to turn off the mod
+* Ability to turn off the addon
 
 ###Installation
 Simply install the package to install this addon on ElkArte.
