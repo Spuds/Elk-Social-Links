@@ -1,5 +1,5 @@
 [hr]
-[center][size=16pt][b]ocial Links[/b][/size]
+[center][size=16pt][b]Social Links[/b][/size]
 [/center]
 [hr]
 
@@ -8,8 +8,6 @@ This adds social the links for Facebook Like, Twitter Tweet, and Google +1 to th
 
 [color=blue][b][size=12pt][u]License[/u][/size][/b][/color]
 This modification is released under a MPL V1.1 license, a copy of it with its provisions is included with the package.
-
-[b]By installing and using this modification you are agreeing to Yahoo's [url=http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html]Smush.it Terms of Use[/url][/b]
 
 [color=blue][b][size=12pt][u]Features[/u][/size][/b][/color]
 [list]

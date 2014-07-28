@@ -1,2 +1,2 @@
 Congratulations! The Social Links! addon was installed successfully!
-You will now be taken to the page where the modification is located.
+You will now be taken to the page where the addon is located.

@@ -4,7 +4,7 @@
 	<name>Social Links</name>
 	<id>spuds:SocialLinks</id>
 	<version>0.1</version>
-	<type>addon</type>
+	<type>modification</type>
 	<license><![CDATA[
 /**
  * Social Links
