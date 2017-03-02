@@ -3,10 +3,10 @@
 /**
  * @package "SocialLinks" addon for ElkArte
  * @author Spuds
- * @copyright (c) 2014 Spuds
+ * @copyright (c) 2014-2017 Spuds
  * @license Mozilla Public License version 1.1 http://www.mozilla.org/MPL/1.1/.
  *
- * @version 0.1
+ * @version 0.2
  *
  */
 
@@ -33,6 +33,7 @@ function igm_sociallinks(&$config_vars)
 		array('check', 'sl_facebook'),
 		array('check', 'sl_twitter'),
 		array('check', 'sl_googleplus'),
+		array('check', 'sl_linkedin'),
 	));
 }
 
@@ -57,22 +58,28 @@ function ipdc_sociallinks(&$output, &$message)
 	if ($output['id'] == $context['topic_first_message'])
 	{
 		// Yes ugly inline css
-		$output['body'] .= '
-			</div><div class="floatleft" style="margin: 15px 0 0;">';
+		$style = empty($output['attachment']) ? 'class="floatleft" style="margin: 15px 0 0;"' : 'style="text-align: left;margin: 15px 0 0;"';
 
-		// Show Facebook Like button
-		if (!empty($modSettings['sl_facebook']))
-			$output['body'] .= '
-				<iframe src="http://www.facebook.com/plugins/like.php?href=' . $scripturl . '?topic=' . $context['current_topic'] . '&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:20px;" allowTransparency="true"></iframe>';
+		$output['body'] .= '
+			</div><div ' . $style . '>';
 
 		// Show Twitter Tweet button
 		if (!empty($modSettings['sl_twitter']))
-			$output['body'] .= '
-				<a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counturl="' . $scripturl . '?topic=' . $context['current_topic'] . '"></a><script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+			$output['body'] .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counturl="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-text="'. $context['page_title_html_safe'] .'"></a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
 
 		// Show Google +1 button
 		if (!empty($modSettings['sl_googleplus']))
 			$output['body'] .= '
-				<div class="g-plusone" data-size="medium"></div><script type="text/javascript">(function() {var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);})();</script>';
+				<div class="g-plus" data-action="share" data-annotation="bubble" data-height"28" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '"></div><script>(function() {var po=document.createElement("script");po.type="text/javascript";po.async=true;po.src="https://apis.google.com/js/platform.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(po, s);})();</script>';
+
+		// Show LinkedIn button
+		if (!empty($modSettings['sl_linkedin']))
+			$output['body'] .= '
+				<span style="display: inline-block;vertical-align: top"><script src="//platform.linkedin.com/in.js"> lang: en_US</script><script type="IN/Share" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counter="right"></script></span>';
+
+		// Show Facebook Like button
+		if (!empty($modSettings['sl_facebook']))
+			$output['body'] .= '
+            	<iframe src="https://www.facebook.com/plugins/like.php?href=' . $scripturl . '?topic=' . $context['current_topic'] . '&width=90&layout=button_count&action=like&show_faces=false&share=false&height=20&appId" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>';
 	}
 }

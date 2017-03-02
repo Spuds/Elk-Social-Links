@@ -4,7 +4,7 @@
 [hr]
 
 [color=blue][b][size=12pt][u]Introduction[/u][/size][/b][/color]
-This adds social the links for Facebook Like, Twitter Tweet, and Google +1 to the first post of each thread.
+This adds social the links for Facebook Like, Twitter Tweet, Linked in Share and Google +1 to the first post of each thread.
 
 [color=blue][b][size=12pt][u]License[/u][/size][/b][/color]
 This modification is released under a MPL V1.1 license, a copy of it with its provisions is included with the package.

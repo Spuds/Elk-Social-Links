@@ -3,7 +3,7 @@
 <package-info xmlns="http://www.elkarte.net/site/package-info" xmlns:elk="http://www.elkarte.net/">
 	<name>Social Links</name>
 	<id>spuds:SocialLinks</id>
-	<version>0.1</version>
+	<version>0.2</version>
 	<type>addon</type>
 	<license><![CDATA[
 /**
@@ -12,12 +12,12 @@
  * @author spuds
  * @license MPL 1.1 http://mozilla.org/MPL/1.1/
  *
- * @version 0.1
+ * @version 0.2
  */
 ]]></license>
 
 	<install for="1.0 - 1.0.99">
-		<readme type="inline">This adds social the links for Facebook Like, Twitter Tweet, and Google +1 to the first post of each thread.</readme>
+		<readme type="inline">This adds social the links for Facebook Like, Twitter Tweet, Linked in Share and Google +1 to the first post of each thread.</readme>
 		<license type="inline">This ElkArte addon is released under a MPL V1.1 license, a copy of it with its provisions is included with the package.</license>
 		<require-file name="sociallinks.english.php" destination="LANGUAGEDIR/english">The language strings</require-file>
 		<require-file name="sociallinks.subs.php" destination="SUBSDIR">The hooks</require-file>
