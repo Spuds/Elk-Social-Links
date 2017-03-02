@@ -3,7 +3,7 @@
 /**
  * @package "SocialLinks" addon for ElkArte
  * @author Spuds
- * @copyright (c) 2014-2017 Spuds
+ * @copyright (c) 2014 Spuds
  * @license Mozilla Public License version 1.1 http://www.mozilla.org/MPL/1.1/.
  *
  * @version 0.2
@@ -11,7 +11,25 @@
  */
 
 if (!defined('ELK'))
+{
 	die('No access...');
+}
+
+/**
+ * Integration hook, integrate_load_theme
+ */
+function ilt_sociallinks()
+{
+	global $modSettings;
+
+	// Make sure we need to do anything
+	if (empty($modSettings['sociallinks_onoff']))
+	{
+		return;
+	}
+
+	loadCSSFile('sociallinks.css');
+}
 
 /**
  * Integration hook, integrate_general_mod_settings
@@ -34,6 +52,8 @@ function igm_sociallinks(&$config_vars)
 		array('check', 'sl_twitter'),
 		array('check', 'sl_googleplus'),
 		array('check', 'sl_linkedin'),
+		array('check', 'sl_whatsapp'),
+		array('check', 'sl_telegram'),
 	));
 }
 
@@ -48,38 +68,79 @@ function igm_sociallinks(&$config_vars)
  */
 function ipdc_sociallinks(&$output, &$message)
 {
-	global $modSettings, $context, $scripturl;
+	global $modSettings, $context, $scripturl, $txt;
 
 	// Make sure we need to do anything
-	if (empty($modSettings['sociallinks_onoff']) || (empty($modSettings['sl_facebook']) && empty($modSettings['sl_twitter']) && empty($modSettings['sl_googleplus'])))
+	if (empty($modSettings['sociallinks_onoff']))
+	{
 		return;
+	}
 
 	// If this is this the first message in the thread
 	if ($output['id'] == $context['topic_first_message'])
 	{
-		// Yes ugly inline css
-		$style = empty($output['attachment']) ? 'class="floatleft" style="margin: 15px 0 0;"' : 'style="text-align: left;margin: 15px 0 0;"';
+		loadLanguage('sociallinks');
+
+		// Set the div class
+		$style = empty($output['attachment']) ? 'class="floatleft slink"' : 'class="slink_attach"';
 
 		$output['body'] .= '
-			</div><div ' . $style . '>';
+			</div>
+			<div ' . $style . '>
+				<ul class="sl-buttons">';
 
 		// Show Twitter Tweet button
 		if (!empty($modSettings['sl_twitter']))
-			$output['body'] .= '<a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counturl="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-text="'. $context['page_title_html_safe'] .'"></a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
+		{
+			$output['body'] .= '
+					<li class="sl-t"><a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counturl="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-text="' . $context['page_title_html_safe'] . '"></a></li>';
+
+			loadJavascriptFile('https://platform.twitter.com/widgets.js', array('async' => 'true', 'defer' => 'true'));
+		}
 
 		// Show Google +1 button
 		if (!empty($modSettings['sl_googleplus']))
+		{
 			$output['body'] .= '
-				<div class="g-plus" data-action="share" data-annotation="bubble" data-height"28" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '"></div><script>(function() {var po=document.createElement("script");po.type="text/javascript";po.async=true;po.src="https://apis.google.com/js/platform.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(po, s);})();</script>';
+					<li class="sl-g"><div class="g-plus" data-action="share" data-annotation="none" data-height"28" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '"></div></li>';
+
+			loadJavascriptFile('https://apis.google.com/js/platform.js', array('async' => 'true', 'defer' => 'true'));
+		}
 
 		// Show LinkedIn button
 		if (!empty($modSettings['sl_linkedin']))
+		{
 			$output['body'] .= '
-				<span style="display: inline-block;vertical-align: top"><script src="//platform.linkedin.com/in.js"> lang: en_US</script><script type="IN/Share" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counter="right"></script></span>';
+					<li class="sl-l"><script type="IN/Share" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counter="right"></script></li>';
+
+			loadJavascriptFile("https://platform.linkedin.com/in.js", array('async' => 'true', 'defer' => 'true'));
+		}
+
+		// Show whatsapp share button
+		if (!empty($modSettings['sl_whatsapp']))
+		{
+			$output['body'] .= '
+					<li class="sl-w"><a href="whatsapp://send" data-text="' . $context['page_title_html_safe'] . '" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '" class="wa_btn wa_btn_s" style="display:none">' . $txt['sl_share'] . '</a>';
+
+			loadJavascriptFile("https://cdn.jsdelivr.net/whatsapp-sharing/1.3.3/whatsapp-button.js", array('defer' => 'true'));
+			addInlineJavascript('$(document).ready(function () {WASHAREBTN.crBtn();})', true);
+		}
+
+		// Show telegram share
+		if (!empty($modSettings['sl_telegram']))
+		{
+			$output['body'] .= '
+					<li class="sl-tg"><a href="tg://share?url=' . $scripturl . '?topic=' . $context['current_topic'] . '?t=12&text=' . $context['page_title_html_safe'] . '"><i class="sl-icon icon-tg"></i>' . $txt['sl_share'] . '</a></li>';
+		}
 
 		// Show Facebook Like button
 		if (!empty($modSettings['sl_facebook']))
+		{
 			$output['body'] .= '
-            	<iframe src="https://www.facebook.com/plugins/like.php?href=' . $scripturl . '?topic=' . $context['current_topic'] . '&width=90&layout=button_count&action=like&show_faces=false&share=false&height=20&appId" width="90" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>';
+					<li class="sl-f"><iframe src="https://www.facebook.com/plugins/like.php?href=' . $scripturl . '?topic=' . $context['current_topic'] . '&width=50&layout=button&action=like&show_faces=false&share=false&height=20&appId" width="50" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe></li>';
+		}
+
+		$output['body'] .= '
+			</ul>';
 	}
 }
