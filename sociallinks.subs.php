@@ -111,7 +111,7 @@ function ipdc_sociallinks(&$output, &$message)
 		if (!empty($modSettings['sl_linkedin']))
 		{
 			$output['body'] .= '
-					<li class="sl-l"><script type="IN/Share" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counter="right"></script></li>';
+					<li class="sl-l"><script type="IN/Share" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '"></script></li>';
 
 			loadJavascriptFile("https://platform.linkedin.com/in.js", array('async' => 'true', 'defer' => 'true'));
 		}
