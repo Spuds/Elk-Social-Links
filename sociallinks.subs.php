@@ -3,17 +3,12 @@
 /**
  * @package "SocialLinks" addon for ElkArte
  * @author Spuds
- * @copyright (c) 2014 Spuds
+ * @copyright (c) 2014-2021 Spuds
  * @license Mozilla Public License version 1.1 http://www.mozilla.org/MPL/1.1/.
  *
- * @version 0.3
+ * @version 0.4
  *
  */
-
-if (!defined('ELK'))
-{
-	die('No access...');
-}
 
 /**
  * Integration hook, integrate_load_theme
@@ -50,7 +45,6 @@ function igm_sociallinks(&$config_vars)
 		array('check', 'sociallinks_onoff', 'subtext' => $txt['sociallinks_onoff_desc']),
 		array('check', 'sl_facebook'),
 		array('check', 'sl_twitter'),
-		array('check', 'sl_googleplus'),
 		array('check', 'sl_linkedin'),
 		array('check', 'sl_whatsapp'),
 		array('check', 'sl_telegram'),
@@ -108,21 +102,10 @@ function ipdc_sociallinks(&$output, &$message)
 		{
 			$output['body'] .= '
 					<li class="sl-t">
-						<a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-counturl="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-text="' . $context['page_title_html_safe'] . '"></a>
+						<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-url="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-text="' . $context['page_title_html_safe'] . '"></a>
 					</li>';
 
 			loadJavascriptFile('https://platform.twitter.com/widgets.js', array('async' => 'true', 'defer' => 'true'));
-		}
-
-		// Show Google +1 button
-		if (!empty($modSettings['sl_googleplus']))
-		{
-			$output['body'] .= '
-					<li class="sl-g">
-						<div class="g-plus" data-action="share" data-annotation="none" data-height"28" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '"></div>
-					</li>';
-
-			loadJavascriptFile('https://apis.google.com/js/platform.js', array('async' => 'true', 'defer' => 'true'));
 		}
 
 		// Show LinkedIn button
@@ -144,16 +127,16 @@ function ipdc_sociallinks(&$output, &$message)
 						<a href="whatsapp://send" data-text="' . $context['page_title_html_safe'] . '" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '" class="wa_btn wa_btn_s" style="display:none">' . $txt['sl_share'] . '</a>
 					</li>';
 
-			loadJavascriptFile("https://cdn.jsdelivr.net/whatsapp-sharing/1.3.3/whatsapp-button.js", array('defer' => 'true'));
+			loadJavascriptFile("https://cdn.jsdelivr.net/whatsapp-sharing/1.3.4/whatsapp-button.js", array('defer' => 'true'));
 			addInlineJavascript('$(document).ready(function () {WASHAREBTN.crBtn();})', true);
 		}
 
-		// Show telegram share
+		// Show telegram share, assumes the user has the tg app installed
 		if (!empty($modSettings['sl_telegram']))
 		{
 			$output['body'] .= '
 					<li class="sl-tg">
-						<a href="tg://share?url=' . $scripturl . '?topic=' . $context['current_topic'] . '?t=12&text=' . $context['page_title_html_safe'] . '"><i class="sl-icon icon-tg"></i>' . $txt['sl_share'] . '</a>
+						<a href="tg://msg_url?url=' . $scripturl . '?topic=' . $context['current_topic'] . '?t=12&text=' . $context['page_title_html_safe'] . '"><i class="sl-icon icon-tg"></i>' . $txt['sl_share'] . '</a>
 					</li>';
 		}
 
@@ -163,16 +146,10 @@ function ipdc_sociallinks(&$output, &$message)
 			$output['body'] .= '
 					<li class="sl-f">
 						<div id="fb-root"></div>
-						<div class="fb-like" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+						<div class="fb-like" data-href="' . $scripturl . '?topic=' . $context['current_topic'] . '" data-width="" data-layout="button" data-action="like" data-size="small" data-share="false"></div>
 					</li>';
 
-			addInlineJavascript('(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = \'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11\';
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, \'script\', \'facebook-jssdk\'));', true);
+			loadJavascriptFile('https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0', ['defer' => true, 'async' => true]);
 		}
 
 		$output['body'] .= '

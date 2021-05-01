@@ -3,7 +3,7 @@
 <package-info xmlns="http://www.elkarte.net/site/package-info" xmlns:elk="http://www.elkarte.net/">
 	<name>Social Links</name>
 	<id>spuds:SocialLinks</id>
-	<version>0.3</version>
+	<version>0.4</version>
 	<type>addon</type>
 	<license><![CDATA[
 /**
@@ -12,7 +12,7 @@
  * @author spuds
  * @license MPL 1.1 http://mozilla.org/MPL/1.1/
  *
- * @version 0.3
+ * @version 0.4
  */
 ]]></license>
 
